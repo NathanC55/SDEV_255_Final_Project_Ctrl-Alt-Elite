@@ -5,7 +5,7 @@ import Courses from "./pages/Courses";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/SDEV_255_Final_Project_Ctrl-Alt-Elite">
       <NavBar />
       <Routes>
         <Route path="/" element={<DashBoard />} />
