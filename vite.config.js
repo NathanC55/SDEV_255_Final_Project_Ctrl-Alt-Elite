@@ -1,5 +1,17 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
-export default defineConfig({ base: "/SDEV_255_Final_Project_Ctrl-Alt-Elite/", plugins: [react()] });
+export default defineConfig({
+  root: './frontend/src',  
+  build: {
+    outDir: '../../dist',  
+  },
+  plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true, 
+      }
+    }
+  }
+});
