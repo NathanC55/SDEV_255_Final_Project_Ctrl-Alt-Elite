@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NavBar from "./NavBar";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
 import DashBoard from "./pages/DashBoard";
 import Courses from "./pages/Courses";
 
 function App() {
   return (
-    <Router basename="/SDEV_255_Final_Project_Ctrl-Alt-Elite">
+    <Router>
       <NavBar />
       <Routes>
         <Route path="/" element={<DashBoard />} />
