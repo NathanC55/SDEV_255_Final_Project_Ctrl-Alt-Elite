@@ -1,5 +1,5 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import NavBar from "../src/components/NavBar";
+import NavBar from "./components/NavBar";
 import DashBoard from "./pages/DashBoard";
 import Courses from "./pages/Courses";
 import AddCourse from './pages/AddCourse'; 
