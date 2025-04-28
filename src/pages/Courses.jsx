@@ -1,13 +1,20 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 function Courses() {
 
-  //dummy course data
-  const courses = [
-    { id: 1, name: "111 English Composition", subject: "English", credits: 3, description: "An introduction to English composition." },
-    { id: 2, name: "136 College Algebra", subject: "Math", credits: 3, description: "A college-level algebra course." },
-    { id: 3, name: "255 Web Application Development", subject: "Software Development", credits: 3, description: "A course on web development." }
-  ];
+  const [courses, setCourses] = useState([]); 
+
+  useEffect(() => {
+    fetch("https://jade-handsomely-snickerdoodle.glitch.me/api/courses")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);    
+        setCourses(data);     
+      })
+      .catch(error => console.error(error));
+  }, []); 
+
+  
 
   return (
     <div className="container mt-5">
@@ -32,7 +39,7 @@ function Courses() {
                 <td>{course.subject}</td>
                 <td>{course.credits}</td>
                 <td >
-                <Link to={`/course/${course.id}`} className="btn btn-success btn-sm">
+                <Link to={`/course/${course._id}`} className="btn btn-success btn-sm">
                     View
                 </Link>
                   
