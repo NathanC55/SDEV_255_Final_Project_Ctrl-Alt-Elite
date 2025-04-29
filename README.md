@@ -6,7 +6,7 @@ This application is a simple **course management system** that allows users to v
 
 ## Team Members
 
-- **Nathaniel Isaiah Cortez**
+- **Nathaniel Cortez**
 - **James Klick**
 - **Alex Miracle**
 - **Evan Mitchell Petty**
