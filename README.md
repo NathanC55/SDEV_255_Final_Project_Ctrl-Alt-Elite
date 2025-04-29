@@ -1,12 +1,37 @@
-# React + Vite
+# Course Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application is a simple **course management system** that allows users to view, add, edit, and delete courses. The app interacts with a backend API to store course data in MongoDB. It is built using **React** for the frontend and **Node.js with Express** for the backend.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Team Members
 
-## Expanding the ESLint configuration
+- **Nathaniel Isaiah Cortez**
+- **James Klick**
+- **Alex Miracle**
+- **Evan Mitchell Petty**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Features
+
+- **View Courses**: Displays a list of all courses available.
+- **Add Course**: Allows the creation of a new course with name, subject, credits, and description.
+- **Edit Course**: Allows the modification of an existing course’s details.
+- **Delete Course**: Allows users to delete a course from the database.
+
+---
+
+## Technologies Used
+
+- **Frontend**: React, React Router, Bootstrap
+- **Backend**: Node.js, Express
+- **Database**: MongoDB (hosted on MongoDB Atlas)
+- **API**: RESTful API built with Express
+- **Styling**: Bootstrap for responsive design
+
+---
+
+### Back End
+
+- https://github.com/NathanC55/SDEV_255_Final_Project_Ctrl-Alt-Elite_BackEnd
