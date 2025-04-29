@@ -1,23 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import CourseCard from "../components/CourseCard"; // adjust path if needed
 
 function DashBoard() {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jade-handsomely-snickerdoodle.glitch.me/api/courses")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCourses(data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <div className="container mt-5">
       <h2 className="display-4 text-success">Welcome to the Dashboard</h2>
-      <p className="lead">something here about the dashboard</p>
+      <p className="lead">Check out the latest courses available:</p>
+
       <div className="row mt-4">
-        <div className="col-md-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h5 className="card-title">Card Title</h5>
-              <p className="card-text">example text</p>
-              <a href="#" className="btn btn-success">
-                a button
-              </a>
-            </div>
-          </div>
-        </div>
-        {/* add more cards or content */}
+        {courses.length > 0 ? (
+          courses.map((course) => <CourseCard key={course._id} course={course} />)
+        ) : (
+          <p>Loading courses...</p>
+        )}
       </div>
     </div>
   );
