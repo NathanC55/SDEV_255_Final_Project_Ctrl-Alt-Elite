@@ -1,10 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const navbarStyle = {
     backgroundColor: "#d1f7d1",
   };
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  // Check if user is authenticated by reading from localStorage
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
+  const handleSignOut = () => {
+    if (window.confirm("Are you sure you want to sign out?")) {
+      localStorage.removeItem("token");
+      setIsAuthenticated(false);
+      navigate("/"); // Redirect to home page after sign out
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light" style={navbarStyle}>
       <div className="container-fluid">
@@ -27,10 +49,17 @@ function NavBar() {
                 Courses
               </Link>
             </li>
+            {/* Conditionally render Login or Sign Out link */}
             <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
+              {isAuthenticated ? (
+                <span className="nav-link" style={{ cursor: "pointer" }} onClick={handleSignOut}>
+                  Sign Out
+                </span>
+              ) : (
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
         </div>

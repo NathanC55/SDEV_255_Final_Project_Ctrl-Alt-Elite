@@ -6,9 +6,9 @@ function CourseCard({ course }) {
     <div className="col-md-4 mb-4">
       <div className="card shadow-sm">
         <div className="card-body">
-          <h5 className="card-title">{course.name}</h5>
+          <h5 className="card-title">{course.courseName}</h5>
           <p className="card-text">
-            Subject: {course.subject}
+            Subject: {course.subjectArea}
             <br />
             Credits: {course.credits}
           </p>
