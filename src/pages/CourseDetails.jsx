@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
-import { useNavigate } from "react-router-dom";
+
+const fetchURL = "https://noble-notch-locket.glitch.me";
 
 function CourseDetails() {
   const { id } = useParams();
@@ -9,23 +10,62 @@ function CourseDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://jade-handsomely-snickerdoodle.glitch.me/api/courses")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchCourses = async () => {
+      const token = localStorage.getItem("token"); // Get JWT from storage
+      if (!token) {
+        alert("You must be logged in to view course details.");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${fetchURL}/api/courses`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          console.error("Expected an array but got:", data);
+          return;
+        }
+
         const foundCourse = data.find((c) => c._id === id);
         setCourse(foundCourse);
-      })
-      .catch((error) => console.error("Error fetching courses:", error));
-  }, [id]);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    fetchCourses();
+  }, [id, navigate]);
 
   const handleDelete = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("You must be logged in to delete a course.");
+      navigate("/login");
+      return;
+    }
+
     if (window.confirm("Are you sure you want to delete this course?")) {
       try {
-        const response = await fetch(`https://jade-handsomely-snickerdoodle.glitch.me/api/courses/${id}`, {
+        const response = await fetch(`${fetchURL}/api/courses/${id}`, {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
+
         if (response.ok) {
-          alert("Course deleted sucessfully.");
+          alert("Course deleted successfully.");
           navigate("/courses");
         } else {
           alert("Failed to delete course.");
@@ -53,9 +93,9 @@ function CourseDetails() {
 
   return (
     <div className="container mt-5">
-      <h2>{course.name}</h2>
+      <h2>{course.courseName}</h2>
       <p>
-        <strong>Subject:</strong> {course.subject}
+        <strong>Subject:</strong> {course.subjectArea}
       </p>
       <p>
         <strong>Credits:</strong> {course.credits}

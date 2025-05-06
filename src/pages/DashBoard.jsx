@@ -1,18 +1,49 @@
 import React, { useState, useEffect } from "react";
-import CourseCard from "../components/CourseCard"; // adjust path if needed
+import { useNavigate } from "react-router-dom";
+import CourseCard from "../components/CourseCard";
+
+const fetchURL = "https://noble-notch-locket.glitch.me";
 
 function DashBoard() {
   const [courses, setCourses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://jade-handsomely-snickerdoodle.glitch.me/api/courses")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+    const fetchCourses = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("You must be logged in to view the dashboard.");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${fetchURL}/api/courses`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          console.error("Expected array of courses but got:", data);
+          return;
+        }
+
         setCourses(data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    fetchCourses();
+  }, [navigate]);
 
   return (
     <div className="container mt-5">
