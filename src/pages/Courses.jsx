@@ -1,17 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+const fetchURL = "https://noble-notch-locket.glitch.me";
+
 function Courses() {
   const [courses, setCourses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://jade-handsomely-snickerdoodle.glitch.me/api/courses")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+    const fetchCourses = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("You must be logged in to view courses.");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${fetchURL}/api/courses`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          console.error(data);
+          setCourses([]);
+          return;
+        }
+
         setCourses(data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+      } catch (err) {
+        console.error("Failed to fetch courses:", err);
+      }
+    };
+
+    fetchCourses();
+  }, [navigate]);
 
   return (
     <div className="container mt-5">
@@ -31,9 +59,9 @@ function Courses() {
           </thead>
           <tbody>
             {courses.map((course) => (
-              <tr key={course.id}>
-                <td>{course.name}</td>
-                <td>{course.subject}</td>
+              <tr key={course._id}>
+                <td>{course.courseName}</td>
+                <td>{course.subjectArea}</td>
                 <td>{course.credits}</td>
                 <td>
                   <Link to={`/course/${course._id}`} className="btn btn-success btn-sm">
