@@ -49,6 +49,11 @@ function NavBar() {
                 Courses
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cart">
+                Cart
+              </Link>
+            </li>
             {/* Conditionally render Login or Sign Out link */}
             <li className="nav-item">
               {isAuthenticated ? (

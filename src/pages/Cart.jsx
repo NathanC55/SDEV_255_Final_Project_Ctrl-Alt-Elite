@@ -12,7 +12,7 @@ function Courses() {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("You must be logged in to view courses.");
+        alert("You must be logged in to view your cart.");
         navigate("/login");
         return;
       }
@@ -34,7 +34,7 @@ function Courses() {
 
         setCourses(data);
       } catch (err) {
-        console.error("Failed to fetch courses:", err);
+        console.error("Failed to fetch your cart:", err);
       }
     };
 
@@ -64,11 +64,8 @@ function Courses() {
                 <td>{course.subjectArea}</td>
                 <td>{course.credits}</td>
                 <td>
-                  <Link to={`/course/${course._id}`}  className="btn btn-success btn-sm">
-                    View
-                  </Link>
                   <Link to={`/course/${course._id}`} className="btn btn-success btn-sm">
-                    Add
+                    View
                   </Link>
                 </td>
               </tr>

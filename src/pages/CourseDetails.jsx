@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
-const fetchURL = "https://noble-notch-locket.glitch.me";
+const fetchURL = "http://localhost:3000";
 
 function CourseDetails() {
   const { id } = useParams();

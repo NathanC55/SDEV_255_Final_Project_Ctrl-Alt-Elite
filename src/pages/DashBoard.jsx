@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "../components/CourseCard";
 
-const fetchURL = "https://noble-notch-locket.glitch.me";
+const fetchURL = "http://localhost:3000";
 
 function DashBoard() {
   const [courses, setCourses] = useState([]);
