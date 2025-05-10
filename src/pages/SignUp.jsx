@@ -83,7 +83,6 @@ function SignUp() {
               <select name="role" id="role" className="form-select" defaultValue="teacher" required>
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
-                <option value="admin">Admin</option>
               </select>
             </div>
 
