@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "../components/CourseCard";
 
+const fetchURL = "https://hail-rounded-surfboard.glitch.me";
+
 function DashBoard() {
   const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +19,7 @@ function DashBoard() {
       }
 
       try {
-        const response = await fetch("http://localhost:3000/api/schedule", {
+        const response = await fetch(`${fetchURL}/api/schedule`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
