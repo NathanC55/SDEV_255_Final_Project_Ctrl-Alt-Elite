@@ -2,12 +2,74 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
-const fetchURL = "https://noble-notch-locket.glitch.me";
+const fetchURL = "http://localhost:3000";
 
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+  const [userRole, setUserRole] = useState("");
+  const [inSchedule, setInSchedule] = useState(false);
+  useEffect(() => {
+    const checkSchedule = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUserRole(payload.role);
+      }
+      const response = await fetch("http://localhost:3000/api/schedule", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const schedule = await response.json();
+      setInSchedule(schedule.some((c) => c._id === id));
+    };
+    checkSchedule();
+  }, [id]);
+
+  // Update your buttons
+  <button onClick={() => addToSchedule(course._id)} className="btn btn-primary" disabled={inSchedule}>
+    {inSchedule ? "Already in Schedule" : "Add to Schedule"}
+  </button>;
+
+  {
+    inSchedule && (
+      <button onClick={() => removeFromSchedule(course._id)} className="btn btn-danger ms-2">
+        Remove from Schedule
+      </button>
+    );
+  }
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
+  const addToSchedule = async (courseId) => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${fetchURL}/api/schedule/add/${courseId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    alert(data.message);
+  };
+
+  const removeFromSchedule = async (courseId) => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${fetchURL}/api/schedule/remove/${courseId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    alert(data.message);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -105,12 +167,25 @@ function CourseDetails() {
       </p>
 
       <div className="mt-4">
-        <button className="btn btn-warning me-2" onClick={handleEdit}>
-          Edit
+        {userRole === "teacher" && (
+          <>
+            <button className="btn btn-warning me-2" onClick={handleEdit}>
+              Edit
+            </button>
+            <button className="btn btn-danger me-2" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
+        )}
+        <button onClick={() => addToSchedule(course._id)} className="btn btn-primary" disabled={inSchedule}>
+          {inSchedule ? "Already in Schedule" : "Add to Schedule"}
         </button>
-        <button className="btn btn-danger" onClick={handleDelete}>
-          Delete
-        </button>
+
+        {inSchedule && (
+          <button onClick={() => removeFromSchedule(course._id)} className="btn btn-danger ms-2">
+            Remove from Schedule
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
-const fetchURL = "https://noble-notch-locket.glitch.me";
+const fetchURL = "http://localhost:3000";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -32,7 +32,7 @@ function Login() {
       } else {
         setError(data.message || "Invalid email or password");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     }
   };

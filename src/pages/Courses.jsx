@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const fetchURL = "https://noble-notch-locket.glitch.me";
+const fetchURL = "http://localhost:3000";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
+  const [userRole, setUserRole] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const token = localStorage.getItem("token");
+    // Get user role from token
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUserRole(payload.role);
+      } catch (err) {
+        console.error("Error parsing token:", err);
+      }
+    }
 
+    const fetchCourses = async () => {
       if (!token) {
         alert("You must be logged in to view courses.");
         navigate("/login");
@@ -43,10 +53,15 @@ function Courses() {
 
   return (
     <div className="container mt-5">
-      <h2>Available Courses</h2>
-      <Link to="/AddCourse" className="btn btn-success mb-3">
-        Add New Course
-      </Link>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2>Available Courses</h2>
+        {/* Only show Add button for teachers */}
+        {userRole === "teacher" && (
+          <Link to="/AddCourse" className="btn btn-success">
+            Add New Course
+          </Link>
+        )}
+      </div>
       <div className="table-responsive">
         <table className="table table-hover">
           <thead className="thead-light">
