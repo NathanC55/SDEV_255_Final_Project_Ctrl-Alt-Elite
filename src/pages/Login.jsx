@@ -32,7 +32,7 @@ function Login() {
       } else {
         setError(data.message || "Invalid email or password");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     }
   };
