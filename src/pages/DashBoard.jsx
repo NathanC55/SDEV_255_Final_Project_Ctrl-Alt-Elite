@@ -2,61 +2,71 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "../components/CourseCard";
 
-const fetchURL = "https://noble-notch-locket.glitch.me";
-
 function DashBoard() {
-  const [courses, setCourses] = useState([]);
+  const [schedule, setSchedule] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchSchedule = async () => {
       const token = localStorage.getItem("token");
-
       if (!token) {
-        alert("You must be logged in to view the dashboard.");
         navigate("/login");
         return;
       }
 
       try {
-        const res = await fetch(`${fetchURL}/api/courses`, {
+        const response = await fetch("http://localhost:3000/api/schedule", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+        if (!response.ok) {
+          throw new Error("Failed to load schedule");
         }
 
-        const data = await res.json();
-
-        if (!Array.isArray(data)) {
-          console.error("Expected array of courses but got:", data);
-          return;
-        }
-
-        setCourses(data);
-      } catch (error) {
-        console.error("Error fetching courses:", error);
+        const data = await response.json();
+        setSchedule(data);
+      } catch (err) {
+        console.error("Error:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCourses();
+    fetchSchedule();
   }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="container mt-5 text-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="container mt-5 alert alert-danger">Error: {error}</div>;
+  }
 
   return (
     <div className="container mt-5">
-      <h2 className="display-4 text-success">Welcome to the Dashboard</h2>
-      <p className="lead">Check out the latest courses available:</p>
+      <h2 className="display-4 text-success">My Schedule</h2>
 
-      <div className="row mt-4">
-        {courses.length > 0 ? (
-          courses.map((course) => <CourseCard key={course._id} course={course} />)
-        ) : (
-          <p>Loading courses...</p>
-        )}
-      </div>
+      {schedule.length === 0 ? (
+        <div className="alert alert-info mt-3">Your schedule is empty. Add courses from the Courses page.</div>
+      ) : (
+        <div className="row mt-4">
+          {schedule.map((course) => (
+            <CourseCard key={course._id} course={course} showRemoveButton={true} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

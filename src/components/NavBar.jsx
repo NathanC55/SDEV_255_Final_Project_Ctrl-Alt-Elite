@@ -23,7 +23,7 @@ function NavBar() {
     if (window.confirm("Are you sure you want to sign out?")) {
       localStorage.removeItem("token");
       setIsAuthenticated(false);
-      navigate("/"); // Redirect to home page after sign out
+      navigate("/login"); // Redirect to home page after sign out
     }
   };
 
@@ -49,7 +49,6 @@ function NavBar() {
                 Courses
               </Link>
             </li>
-            {/* Conditionally render Login or Sign Out link */}
             <li className="nav-item">
               {isAuthenticated ? (
                 <span className="nav-link" style={{ cursor: "pointer" }} onClick={handleSignOut}>
