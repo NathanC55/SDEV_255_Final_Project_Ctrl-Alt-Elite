@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const fetchURL = "http://localhost:3000";
+const fetchURL = "https://hail-rounded-surfboard.glitch.me";
 
 function AddCourse() {
   const [formData, setFormData] = useState({

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
-const fetchURL = "http://localhost:3000";
+const fetchURL = "https://hail-rounded-surfboard.glitch.me";
 
 function CourseDetails() {
   const { id } = useParams();
@@ -16,7 +16,7 @@ function CourseDetails() {
         const payload = JSON.parse(atob(token.split(".")[1]));
         setUserRole(payload.role);
       }
-      const response = await fetch("http://localhost:3000/api/schedule", {
+      const response = await fetch(`${fetchURL}/api/schedule`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -27,7 +27,6 @@ function CourseDetails() {
     checkSchedule();
   }, [id]);
 
-  // Update your buttons
   <button onClick={() => addToSchedule(course._id)} className="btn btn-primary" disabled={inSchedule}>
     {inSchedule ? "Already in Schedule" : "Add to Schedule"}
   </button>;

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
-const fetchURL = "http://localhost:3000";
+const fetchURL = "https://hail-rounded-surfboard.glitch.me";
 
 function Login() {
   const [email, setEmail] = useState("");
